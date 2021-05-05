@@ -5,6 +5,46 @@
 #include <iostream>
 #include "depend/hunspell/src/hunspell/hunspell.hxx"
 
+bool IsSmashable(Hunspell& dictionary, const std::string& inputWord)
+{
+    std::cout << "Input is " << inputWord << std::endl;
+
+    bool isInputWordValid = dictionary.spell(inputWord);
+    if (isInputWordValid)
+    {
+        if (inputWord.size() == 1)
+        {
+            return true;
+        }
+    }
+    else
+    {
+        return false;
+    }
+
+    size_t i = 0;
+    std::string newWord = inputWord;
+    while (newWord.size() > 1)
+    {
+        newWord.erase(i++, 1);
+        bool isInDictionary = dictionary.spell(newWord);
+        if (isInDictionary)
+        {
+            if (IsSmashable(dictionary, newWord))
+            {
+                return true;
+            }
+        }
+        else
+        {
+            newWord = inputWord;
+            continue;
+        }
+    }
+
+    return false;
+}
+
 int main(int argc, char** argv)
 {
     // TODO add pulling of dictionary to build
@@ -12,17 +52,17 @@ int main(int argc, char** argv)
     const char* dpath = "en_US.dic";
     Hunspell dictionary(affPath, dpath);
 
-    std::string inputWord("duckl");
+    std::string inputWord("sprint");
 
-    bool isWord = dictionary.spell(inputWord);
+    bool isWord = IsSmashable(dictionary, inputWord);
 
     if (isWord)
     {
-        std::cout << inputWord << " is a word" << std::endl;
+        std::cout << inputWord << " is smashable" << std::endl;
     }
     else
     {
-        std::cout << inputWord << " is not a word" << std::endl;
+        std::cout << inputWord << " is not smashable" << std::endl;
     }
 
     return 0;
