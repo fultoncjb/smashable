@@ -1,0 +1,3 @@
+[submodule "depend/hunspell"]
+	path = depend/hunspell
+	url = https://github.com/hunspell/hunspell.git
