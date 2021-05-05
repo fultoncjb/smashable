@@ -7,8 +7,6 @@
 
 bool IsSmashable(Hunspell& dictionary, const std::string& inputWord)
 {
-    std::cout << "Input is " << inputWord << std::endl;
-
     bool isInputWordValid = dictionary.spell(inputWord);
     if (isInputWordValid)
     {
@@ -48,15 +46,20 @@ bool IsSmashable(Hunspell& dictionary, const std::string& inputWord)
 int main(int argc, char** argv)
 {
     // TODO add pulling of dictionary to build
+
+    // Setup the dictionary object
     const char* affPath = "en_US.aff";
     const char* dpath = "en_US.dic";
     Hunspell dictionary(affPath, dpath);
 
-    std::string inputWord("sprint");
+    // Allow the user to input the word of interest
+    std::cout << "Enter a word to determine if it is smashable" << std::endl;
+    std::string inputWord;
+    std::cin >> inputWord;
 
-    bool isWord = IsSmashable(dictionary, inputWord);
+    bool isSmashable = IsSmashable(dictionary, inputWord);
 
-    if (isWord)
+    if (isSmashable)
     {
         std::cout << inputWord << " is smashable" << std::endl;
     }
