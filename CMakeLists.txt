@@ -21,7 +21,6 @@ pkg_search_module(HUNSPELL REQUIRED ${HUNSPELL_BUILD_DIR}/lib/pkgconfig/hunspell
 
 link_directories(${HUNSPELL_LIBRARY_DIRS})
 add_executable(Smashable main.cpp)
-message(Blah ${HUNSPELL_LIBRARIES})
 target_link_libraries(Smashable PRIVATE ${HUNSPELL_LIBRARIES})
 target_include_directories(Smashable PRIVATE ${HUNSPELL_INCLUDE_DIRS})
 target_compile_definitions(Smashable PRIVATE -DDICTIONARIES_DIR="${DICTIONARIES_DIR}")
