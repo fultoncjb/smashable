@@ -3,7 +3,7 @@
 //
 
 #include <iostream>
-#include "depend/hunspell/src/hunspell/hunspell.hxx"
+#include "hunspell.hxx"
 
 bool IsSmashable(Hunspell& dictionary, const std::string& inputWord)
 {
@@ -26,12 +26,9 @@ bool IsSmashable(Hunspell& dictionary, const std::string& inputWord)
     {
         newWord.erase(i++, 1);
         bool isInDictionary = dictionary.spell(newWord);
-        if (isInDictionary)
+        if (isInDictionary && IsSmashable(dictionary, newWord))
         {
-            if (IsSmashable(dictionary, newWord))
-            {
-                return true;
-            }
+            return true;
         }
         else
         {
@@ -45,12 +42,10 @@ bool IsSmashable(Hunspell& dictionary, const std::string& inputWord)
 
 int main(int argc, char** argv)
 {
-    // TODO add pulling of dictionary to build
-
     // Setup the dictionary object
-    const char* affPath = "en_US.aff";
-    const char* dpath = "en_US.dic";
-    Hunspell dictionary(affPath, dpath);
+    std::string affPath = std::string(DICTIONARIES_DIR) + "/en_US.aff";
+    std::string dpath = std::string(DICTIONARIES_DIR) + "/en_US.dic";
+    Hunspell dictionary(affPath.c_str(), dpath.c_str());
 
     // Allow the user to input the word of interest
     std::cout << "Enter a word to determine if it is smashable" << std::endl;
